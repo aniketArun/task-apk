@@ -15,10 +15,14 @@ class Task extends Model
         'status',
         'priority',
         'due_date',
-        'assigned_to'
+        'assigned_to',
+        'user_id',
     ];
     protected $casts = [
         'due_date' => 'datetime',
     ];
-    
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

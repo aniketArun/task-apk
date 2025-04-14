@@ -13,7 +13,10 @@ class TaskController extends Controller
     {
         $query = Task::query();
 
-        // Apply filters
+        // Filter by user_id
+        $query->where('user_id', auth()->id());
+
+        // Apply other filters
         if ($request->filled('status')) {
             $query->where('status', $request->status);
         }
@@ -24,13 +27,15 @@ class TaskController extends Controller
 
         if ($request->has('overdue')) {
             $query->whereDate('due_date', '<', now())
-                  ->whereIn('status', ['Pending', 'In Progress']);
+                ->whereIn('status', ['Pending', 'In Progress']);
         }
 
         $tasks = $query->orderBy('due_date')->get();
 
         return view('tasks.index', compact('tasks'));
     }
+
+
 
     // Show Create Form
     public function create()
@@ -41,19 +46,21 @@ class TaskController extends Controller
     // Store New Task
     public function store(Request $request)
     {
-        $request->validate([
+        $validated = $request->validate([
             'title' => 'required|string|max:255',
-            'description' => 'required',
+            'description' => 'nullable|string',
             'status' => 'required|in:Pending,In Progress,Completed',
             'priority' => 'required|in:Low,Medium,High',
             'due_date' => 'required|date',
-            'assigned_to' => 'nullable|string|max:255',
         ]);
 
-        Task::create($request->all());
+        $validated['user_id'] = auth()->id(); // Assign the logged-in user's ID to user_id
 
-        return redirect()->route('tasks.index')->with('success', 'Task created successfully!');
+        Task::create($validated);
+
+        return redirect()->route('tasks.index')->with('success', 'Task created successfully.');
     }
+
 
     // Show Edit Form
     public function edit(Task $task)
@@ -93,4 +100,3 @@ class TaskController extends Controller
         return redirect()->route('tasks.index')->with('success', 'Task deleted successfully!');
     }
 }
-

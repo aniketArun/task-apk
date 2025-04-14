@@ -20,6 +20,7 @@ return new class extends Migration
             $table->date('due_date');
             $table->string('assigned_to')->nullable(); // For bonus
             $table->timestamps();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
         });
     }
 

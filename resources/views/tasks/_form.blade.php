@@ -35,7 +35,8 @@
 <div class="mb-3">
     <label for="due_date" class="form-label">Due Date</label>
     // In your edit view
-    <input type="date" name="due_date" value="{{ old('due_date', $task->due_date ? $task->due_date->format('Y-m-d') : '') }}">
+    <input type="date" name="due_date" value="{{ old('due_date', isset($task) && $task->due_date ? $task->due_date->format('Y-m-d') : '') }}">
+
 </div>
 
 <div class="mb-3">
