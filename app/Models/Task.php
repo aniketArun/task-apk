@@ -17,4 +17,8 @@ class Task extends Model
         'due_date',
         'assigned_to'
     ];
+    protected $casts = [
+        'due_date' => 'datetime',
+    ];
+    
 }

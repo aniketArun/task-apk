@@ -14,9 +14,9 @@
     <label for="status" class="form-label">Status</label>
     <select name="status" class="form-select" required>
         @foreach(['Pending', 'In Progress', 'Completed'] as $status)
-            <option value="{{ $status }}" {{ (old('status', $task->status ?? '') === $status) ? 'selected' : '' }}>
-                {{ $status }}
-            </option>
+        <option value="{{ $status }}" {{ (old('status', $task->status ?? '') === $status) ? 'selected' : '' }}>
+            {{ $status }}
+        </option>
         @endforeach
     </select>
 </div>
@@ -25,16 +25,17 @@
     <label for="priority" class="form-label">Priority</label>
     <select name="priority" class="form-select" required>
         @foreach(['Low', 'Medium', 'High'] as $priority)
-            <option value="{{ $priority }}" {{ (old('priority', $task->priority ?? '') === $priority) ? 'selected' : '' }}>
-                {{ $priority }}
-            </option>
+        <option value="{{ $priority }}" {{ (old('priority', $task->priority ?? '') === $priority) ? 'selected' : '' }}>
+            {{ $priority }}
+        </option>
         @endforeach
     </select>
 </div>
 
 <div class="mb-3">
     <label for="due_date" class="form-label">Due Date</label>
-    <input type="date" name="due_date" class="form-control" value="{{ old('due_date', isset($task) ? $task->due_date->format('Y-m-d') : '') }}" required>
+    // In your edit view
+    <input type="date" name="due_date" value="{{ old('due_date', $task->due_date ? $task->due_date->format('Y-m-d') : '') }}">
 </div>
 
 <div class="mb-3">
